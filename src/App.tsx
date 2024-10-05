@@ -1,18 +1,15 @@
-import type { Component } from 'solid-js';
-
-import logo from './logo.svg';
+import { Toaster } from 'solid-toast';
 import styles from './App.module.css';
 import Button from '@suid/material/Button';
 
-const App: Component = () => {
+
+const App = (props: any) => {
     return (
         <div class={styles.App}>
-            <header class={styles.header}>
-
-                <Button variant="contained">Hello world</Button>
-
-            </header>
+            {props.children}
+            <Toaster />
         </div>
+
     );
 };
 
