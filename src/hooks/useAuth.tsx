@@ -2,14 +2,31 @@ import { redirect, useNavigate } from "@solidjs/router";
 import { createEffect, createSignal, on } from "solid-js";
 
 export type User = {
+    id: number;
     name: string;
     mail: string;
-    token: string;
+    // token: string; <- We have moved this to an HTTP only cookie
 }
 const key = "auth-user";
 function useAuth(expectLoggedIn: boolean) {
     const [user, setUser] = createSignal<User | null>(null);
     const navigate = useNavigate();
+
+    const checkNav = (user: User | null) => {
+        if (user) {
+            //Check if state is logged in, but this is from login/register
+            if (!expectLoggedIn) {
+                console.log("redirecting to /")
+                navigate("/", { replace: true });
+            }
+        } else {
+            //User is undefined but we are trying to visit from home
+            if (expectLoggedIn) {
+                console.log("redirecting to /login")
+                navigate("/login", { replace: true });
+            }
+        }
+    }
     createEffect((prevSum) => {
         // do something with `a` and `prevSum`
         console.log("Retrieving");
@@ -27,19 +44,7 @@ function useAuth(expectLoggedIn: boolean) {
                 user
             );
 
-            if (user) {
-                //Check if state is logged in, but this is from login/register
-                if (!expectLoggedIn) {
-                    console.log("redirecting to /")
-                    navigate("/", { replace: true });
-                }
-            } else {
-                //User is undefined but we are trying to visit from home
-                if (expectLoggedIn) {
-                    console.log("redirecting to /login")
-                    navigate("/login", { replace: true });
-                }
-            }
+            checkNav(user);
             console.log(item !== null && item != "undefined"
                 ? (JSON.parse(item) as User)
                 : null);
@@ -52,6 +57,7 @@ function useAuth(expectLoggedIn: boolean) {
         try {
             setUser(value);
             localStorage.setItem(key, JSON.stringify(value));
+            checkNav(value);
         } catch (error) {
             console.error(error);
         }
@@ -61,6 +67,7 @@ function useAuth(expectLoggedIn: boolean) {
         try {
             setUser(null);
             localStorage.removeItem(key);
+            navigate("/login", { replace: true });
         } catch (error) {
             console.error(error);
         }

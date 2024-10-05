@@ -32,7 +32,8 @@ export default function Login() {
             const res = await axios.post<{ message: string, data: User }>("http://localhost:8080/users/login", data, {
                 headers: {
                     "Access-Control-Allow-Origin": "*"
-                }
+                },
+                withCredentials: true
             });
             console.log(res.data);
             if (res.data) {

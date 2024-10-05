@@ -36,7 +36,8 @@ export default function Register() {
             const res = await axios.post<{ message: string, data: User }>("http://localhost:8080/users/register", data, {
                 headers: {
                     "Access-Control-Allow-Origin": "*"
-                }
+                },
+                withCredentials: true
             });
             console.log(res.data);
             if (res.data) {
