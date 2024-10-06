@@ -16,12 +16,14 @@
     "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
     "@solidjs/router": "^0.14.7",
     "@suid/icons-material": "^0.8.1",
     "@suid/material": "^0.18.0",
     "@suid/vite-plugin": "^0.3.1",
     "@tanstack/solid-query": "^5.59.0",
     "axios": "^1.7.7",
+    "solid-icons": "^1.1.0",
     "solid-js": "^1.8.11",
     "solid-toast": "^0.5.0"
   }

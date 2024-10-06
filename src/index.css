@@ -45,3 +45,28 @@ code {
 .err {
     color: red;
 }
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.item:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.item-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.deleteIcon:hover {
+    cursor: pointer;
+    color: red;
+    fill: red;
+}
