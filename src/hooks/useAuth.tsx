@@ -4,7 +4,7 @@ import { createEffect, createSignal, on } from "solid-js";
 export type User = {
     id: number;
     name: string;
-    mail: string;
+    email: string;
     // token: string; <- We have moved this to an HTTP only cookie
 }
 const key = "auth-user";
@@ -63,7 +63,7 @@ function useAuth(expectLoggedIn: boolean) {
         }
     };
 
-    const removeUser: () => void = () => {
+    const logout: () => void = () => {
         try {
             setUser(null);
             localStorage.removeItem(key);
@@ -72,7 +72,7 @@ function useAuth(expectLoggedIn: boolean) {
             console.error(error);
         }
     };
-    return [user, storeUser, removeUser] as const;
+    return { user, storeUser, logout };
 }
 
 export default useAuth;

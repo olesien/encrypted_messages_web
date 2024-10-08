@@ -70,3 +70,47 @@ code {
     color: red;
     fill: red;
 }
+
+header {
+    background-color: black;
+    color: white;
+    align-items: center;
+    display: flex;
+    gap: 5px;
+    padding: 10px 50px;
+}
+
+.logoContainer {
+    width: 150px;
+}
+
+.linkContainer {
+    flex: 1;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+}
+
+.linkContainer a {
+    text-decoration: none;
+    color: rgb(60, 60, 202);
+}
+
+.linkContainer a:hover {
+    color: lightblue;
+    cursor: pointer;
+}
+
+.logoutContainer {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.account {
+    margin-top: 50px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

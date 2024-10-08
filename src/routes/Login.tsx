@@ -10,7 +10,7 @@ type LoginForm = {
 }
 
 export default function Login() {
-    const [user, setUser] = useAuth(false);
+    const { user, storeUser } = useAuth(false);
     const [form, setForm] = createSignal<LoginForm>({ email: "", password: "" });
     const [err, setErr] = createSignal("");
 
@@ -37,12 +37,12 @@ export default function Login() {
             });
             console.log(res.data);
             if (res.data) {
-                setUser(res.data.data);
+                storeUser(res.data.data);
                 toast.success("Successfully logged in!");
             }
 
-        } catch (err) {
-            setErr((err as AxiosError)?.message ?? "Unknown error occured");
+        } catch (err: any) {
+            setErr(err?.response?.data?.message ?? "Unknown error occured");
         }
     }
     console.log(user())

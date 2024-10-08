@@ -2,15 +2,16 @@ import { redirect } from "@solidjs/router";
 import useAuth from "../hooks/useAuth";
 import { Button } from "@suid/material";
 import { QueryClient, QueryClientProvider, createMutation, createQuery } from '@tanstack/solid-query'
-import { Match, Switch } from "solid-js";
+import { createEffect, Match, on, Switch } from "solid-js";
 import axios from "axios";
 import Messages, { EncryptedMessage } from "../components/Messages";
 import toast from "solid-toast";
 import { queryClient } from "../App";
 import { reconcile } from "solid-js/store";
+import Header from "../components/Header";
 
 export default function Home() {
-    const [user, setUser, logOut] = useAuth(true);
+    const { logout } = useAuth(true);
 
     const query = createQuery(() => ({
         queryKey: ['encrypted_messages'],
@@ -27,8 +28,20 @@ export default function Home() {
             return response.data;
 
         },
-        reconcile: (oldData, newData) => reconcile(newData)(oldData) //Fixer for rerendering issues on refetch
+        reconcile: (oldData, newData) => reconcile(newData)(oldData), //Fixer for rerendering issues on refetch
     }))
+
+    createEffect(
+        on(
+            () => query.error,
+            () => {
+                if (query.error && query.error.message.includes("403")) {
+                    toast.error("Logged out due to token expiry");
+                    logout();
+                }
+            }
+        )
+    );
 
     const addMessage = async () => {
         try {
@@ -89,6 +102,7 @@ export default function Home() {
 
     return (
         <div>
+            <Header logout={logout} />
             <h2>Home</h2>
             <Switch>
                 <Match when={query.isPending}>Loading...</Match>
@@ -105,7 +119,6 @@ export default function Home() {
                 </Match>
 
             </Switch>
-            <Button onClick={logOut}>Logout</Button>
         </div >
     )
 }

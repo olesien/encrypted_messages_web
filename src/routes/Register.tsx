@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 import { createSignal } from "solid-js";
 import useAuth, { User } from "../hooks/useAuth";
 import toast from "solid-toast";
-import { redirect } from "@solidjs/router";
+
 type LoginForm = {
     name: string;
     email: string;
@@ -12,7 +12,7 @@ type LoginForm = {
 }
 
 export default function Register() {
-    const [user, setUser] = useAuth(false);
+    const { storeUser } = useAuth(false);
     const [form, setForm] = createSignal<LoginForm>({ name: "", email: "", password: "", password2: "" });
     const [err, setErr] = createSignal("");
 
@@ -41,7 +41,7 @@ export default function Register() {
             });
             console.log(res.data);
             if (res.data) {
-                setUser(res.data.data);
+                storeUser(res.data.data);
                 toast.success("Successfully registered!");
             }
         } catch (err) {
